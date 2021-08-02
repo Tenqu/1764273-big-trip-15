@@ -9,7 +9,7 @@ import { createEditFormTemplate } from './view/edit-form.js';
 import {createTripPointTemplate} from './view/trip-point.js';
 const TRIP_POINTS = 3;
 
-const render = (container, template, place) => {
+const render = (container, template, place='beforeend') => {
   container.insertAdjacentHTML(place, template);
 };
 
@@ -18,21 +18,21 @@ const siteHeaderElement = document.querySelector('.page-header');
 const siteTripMainElement = siteHeaderElement.querySelector('.trip-main');
 
 const siteNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
-render(siteNavigationElement, createMenuTemplate(), 'beforeend');
+render(siteNavigationElement, createMenuTemplate());
 render(siteTripMainElement, createTripInfoTemplate(), 'afterbegin');
 
 const siteTripInfoSection = siteTripMainElement.querySelector('.trip-main__trip-info');
 const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
 const siteFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
-render(siteTripInfoSection, createTripCostTemplate(), 'beforeend');
-render(siteFilterElement, createFilterTemplate(), 'beforeend');
-render(siteTripEventsElement, createSortTemplate(), 'beforeend');
-render(siteTripEventsElement, createTripEventsListTemplate(), 'beforeend');
+render(siteTripInfoSection, createTripCostTemplate());
+render(siteFilterElement, createFilterTemplate());
+render(siteTripEventsElement, createSortTemplate());
+render(siteTripEventsElement, createTripEventsListTemplate());
 
 const siteTripEventsListElement = siteTripEventsElement.querySelector('.trip-events__list');
-render(siteTripEventsListElement, createEditFormTemplate(), 'beforeend');
-render(siteTripEventsListElement, createAddFormTemplate(), 'beforeend');
+render(siteTripEventsListElement, createEditFormTemplate());
+render(siteTripEventsListElement, createAddFormTemplate());
 
 for (let i = 0; i < TRIP_POINTS; i++) {
-  render(siteTripEventsListElement, createTripPointTemplate(), 'beforeend');
+  render(siteTripEventsListElement, createTripPointTemplate());
 }
