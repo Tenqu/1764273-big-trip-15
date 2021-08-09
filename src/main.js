@@ -1,38 +1,34 @@
 import { createFilterTemplate } from './view/filter.js';
-import { createAddFormTemplate } from './view/add-form.js';
 import { createMenuTemplate } from './view/site-menu.js';
 import { createSortTemplate } from './view/sort.js';
 import { createTripInfoTemplate } from './view/trip-info.js';
-import { createTripEventsListTemplate } from './view/trip-events.js';
-import { createTripCostTemplate } from './view/trip-cost.js';
 import { createEditFormTemplate } from './view/edit-form.js';
 import {createTripPointTemplate} from './view/trip-point.js';
-const TRIP_POINTS = 3;
+import { generateData } from './mock/data.js';
+import dayjs from 'dayjs';
+const TRIP_POINTS = 15;
 
+const data = new Array(TRIP_POINTS).fill().map(generateData);
+const siteMainElement = document.querySelector('.trip-main');
+const siteNavigationElement = siteMainElement.querySelector('.trip-controls__navigation');
+const siteTripEventsElement = document.querySelector('.trip-events');
+const siteFilterElement = siteMainElement.querySelector('.trip-controls__filters');
 const render = (container, template, place='beforeend') => {
   container.insertAdjacentHTML(place, template);
 };
 
-const siteMainElement = document.querySelector('.page-main');
-const siteHeaderElement = document.querySelector('.page-header');
-const siteTripMainElement = siteHeaderElement.querySelector('.trip-main');
+const sortTripPointsByStart = () => data.slice().sort((pointA, pointB) => dayjs(pointA.timeFrom).diff(pointB.timeFrom));
+const tripPointsSortedByStart = sortTripPointsByStart(data);
 
-const siteNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
-render(siteNavigationElement, createMenuTemplate());
-render(siteTripMainElement, createTripInfoTemplate(), 'afterbegin');
-
-const siteTripInfoSection = siteTripMainElement.querySelector('.trip-main__trip-info');
-const siteTripEventsElement = siteMainElement.querySelector('.trip-events');
-const siteFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
-render(siteTripInfoSection, createTripCostTemplate());
-render(siteFilterElement, createFilterTemplate());
-render(siteTripEventsElement, createSortTemplate());
-render(siteTripEventsElement, createTripEventsListTemplate());
-
-const siteTripEventsListElement = siteTripEventsElement.querySelector('.trip-events__list');
-render(siteTripEventsListElement, createEditFormTemplate());
-render(siteTripEventsListElement, createAddFormTemplate());
+render(siteMainElement, createTripInfoTemplate(tripPointsSortedByStart), 'afterbegin');//Информация
+render(siteNavigationElement, createMenuTemplate()); //Меню
+render(siteFilterElement, createFilterTemplate()); //Фильтр
+render(siteTripEventsElement, createSortTemplate()); //Сортировка
+//render(siteTripEventsElement, createAddFormTemplate(), 'afterbegin');//Форма создания
 
 for (let i = 0; i < TRIP_POINTS; i++) {
-  render(siteTripEventsListElement, createTripPointTemplate());
+  render(siteTripEventsElement, createTripPointTemplate(data[i]));
 }
+
+const siteTripEventsListElement = siteTripEventsElement.querySelector('.trip-events__list');//Точки маршрута
+render(siteTripEventsListElement, createEditFormTemplate(data[0]), 'afterbegin');
