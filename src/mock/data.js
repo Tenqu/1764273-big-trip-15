@@ -18,7 +18,7 @@ const generateOffers = () => {
 };
 
 const getOffers = function() {
-  return new Array(getRandomInteger(0, 5)).fill().map(() => generateOffers());
+  return new Array(getRandomInteger(1, 5)).fill().map(() => generateOffers());
 };
 
 const generatePhoto = () => {
@@ -30,7 +30,7 @@ const generatePhoto = () => {
 };
 
 const getPhoto = function () {
-  return  new Array(getRandomInteger(0, 5)).fill().map(() => generatePhoto());
+  return  new Array(getRandomInteger(1, 5)).fill().map(() => generatePhoto());
 };
 
 
@@ -44,7 +44,7 @@ export const generateData = () => {
     timeTo: endTime,
     price: getRandomInteger(5, 200),
     offers: getOffers(),
-    info:getRandomArray(DESTINATIONS).slice(0, 5).join(' '),
+    info:getRandomArray(DESTINATIONS).slice(1, 5).join(' '),
     photo: getPhoto(),
     isFavorite: Boolean(getRandomInteger(0,1)),
   };
