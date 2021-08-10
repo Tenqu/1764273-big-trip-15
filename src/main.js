@@ -6,6 +6,7 @@ import { createEditFormTemplate } from './view/edit-form.js';
 import {createTripPointTemplate} from './view/trip-point.js';
 import { generateData } from './mock/data.js';
 import dayjs from 'dayjs';
+import { render } from './utils/util.js';
 const TRIP_POINTS = 15;
 
 const data = new Array(TRIP_POINTS).fill().map(generateData);
@@ -13,9 +14,6 @@ const siteMainElement = document.querySelector('.trip-main');
 const siteNavigationElement = siteMainElement.querySelector('.trip-controls__navigation');
 const siteTripEventsElement = document.querySelector('.trip-events');
 const siteFilterElement = siteMainElement.querySelector('.trip-controls__filters');
-const render = (container, template, place='beforeend') => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const sortTripPointsByStart = () => data.slice().sort((pointA, pointB) => dayjs(pointA.timeFrom).diff(pointB.timeFrom));
 const tripPointsSortedByStart = sortTripPointsByStart(data);

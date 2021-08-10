@@ -1,12 +1,12 @@
 import { getDateFormat } from '../utils/util';
 
 export const createEditFormTemplate = (data) => {
-  const {type, name, timeFrom, timeTo, price, offers, info, photo} = data;
+  const {type, destination, timeFrom, timeTo, price, offers} = data;
   const createTripTypeItem = ( isChecked = false) => `<div class="event__type-item">
         <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked ? 'checked' : ''}>
         <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
       </div>`;
-  const createPictureMarkup = () => photo.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join(' ');
+  const createPictureMarkup = () => destination.photo.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join(' ');
   const createOfferMarkup = (offer) =>
     `<div class="event__offer-selector">
        <input class="event__offer-checkbox  visually-hidden" id="${offer.title}" type="checkbox" name="event-offer-${offer.title}"}>
@@ -16,6 +16,13 @@ export const createEditFormTemplate = (data) => {
         <span class="even__offer-price">${offer.price}</span>
       </label>
      </div>`;
+  const dataListID = () => (
+    `<datalist id="destination-list-1">
+        <option value="${destination.name}"></option>
+        <option value="${destination.name}"></option>
+        <option value="${destination.name}"></option>
+        </datalist>`
+  );
   const offersMarkup = offers.map((item) => createOfferMarkup(item)).join(' ');
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -37,12 +44,8 @@ export const createEditFormTemplate = (data) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
-        <datalist id="destination-list-1">
-        <option value="${name}"></option>
-        <option value="${name}"></option>
-        <option value="${name}"></option>
-        </datalist>
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+        ${dataListID()}
       </div>
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
@@ -73,7 +76,7 @@ export const createEditFormTemplate = (data) => {
       </section>
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${info}</p>
+        <p class="event__destination-description">${destination.description}</p>
         <div class="event__photos-container">
         <div class="event__photos-tape">
         ${createPictureMarkup()}

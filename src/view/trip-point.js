@@ -5,7 +5,7 @@ const MINUTES_IN_DAY = 1440;
 const MINUTES_IN_HOUR = 60;
 
 export const createTripPointTemplate = (data) => {
-  const {type, name, timeFrom, timeTo, price, offers, isFavorite} = data;
+  const {type, destination, timeFrom, timeTo, price, offers, isFavorite} = data;
 
   const getDate = () => {
     const counterMinute = 60;
@@ -34,7 +34,7 @@ export const createTripPointTemplate = (data) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${name}</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime=${getDateISO(timeFrom)}>${getDateHM(timeFrom)}</time>

@@ -1,4 +1,8 @@
 import dayjs from 'dayjs';
+
+export const render = (container, template, place='beforeend') => {
+  container.insertAdjacentHTML(place, template);
+};
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));

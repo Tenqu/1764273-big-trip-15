@@ -29,3 +29,154 @@ export const DESTINATIONS = [
   'In rutrum ac purus sit amet tempus.',
 ];
 
+export const OFFERS = [
+  {
+    type: 'Flight',
+    offers: [
+      {
+        title: 'Choose meal',
+        price: '180',
+        name: 'meal',
+      },
+      {
+        title: 'Switch to comfort class',
+        price: '100',
+        name: 'comfort',
+      },
+      {
+        title: 'Add luggage',
+        price: '30',
+        name: 'luggage',
+      },
+      {
+        title: 'Choose seats',
+        price: '25',
+        name: 'seats',
+      },
+      {
+        title: 'Take pet on board',
+        price: '50',
+        name: 'pet',
+      },
+    ]},
+  {
+    type: 'Taxi',
+    offers: [
+      {
+        title: 'Kid\'s sit',
+        price: '20',
+        name: 'sit',
+      },
+      {
+        title: 'With pet',
+        price: '10',
+        name: 'pet',
+      },
+      {
+        title: 'Comfort',
+        price: '30',
+        name: 'comfort',
+      },
+    ],
+  },
+  {
+    type: 'Bus',
+    offers: [
+      {
+        title: 'Front seat',
+        price: '20',
+        name: 'seat',
+      },
+      {
+        title: 'Free food',
+        price: '10',
+        name: 'food',
+      },
+    ],
+  },
+  {
+    type: 'Train',
+    offers: [
+      {
+        title: 'Large seats',
+        price: '20',
+        name: 'seats',
+      },
+    ],
+  },
+  {
+    type: 'Ship',
+    offers: [
+      {
+        title: 'Luxury food',
+        price: '50',
+        name: 'lfood',
+      },
+      {
+        title: 'With pet',
+        price: '10',
+        name: 'pet',
+      },
+    ],
+  },
+  {
+    type: 'Drive',
+    offers: [
+      {
+        title: 'Mercedes',
+        price: '20',
+        name: 'mercedes',
+      },
+      {
+        title: 'Toll road',
+        price: '50',
+        name: 'road',
+      },
+    ],
+  },
+  {
+    type: 'Check-in',
+    offers: [
+      {
+        title: '2 bedroom',
+        price: '20',
+        name: 'bedroom',
+      },
+      {
+        title: 'Breakfast',
+        price: '50',
+        name: 'breakfast',
+      },
+    ],
+  },
+  {
+    type: 'Sightseeing',
+    offers: [
+      {
+        title: 'Red Square',
+        price: '20',
+        name: 'square',
+      },
+      {
+        title: 'Shop',
+        price: '50',
+        name: 'shop',
+      },
+    ],
+  },
+  {
+    type: 'Restaurant',
+    offers: [
+      {
+        title: 'Kid\'s sit',
+        price: '20',
+        name: 'sit',
+      },
+      {
+        title: 'Stake',
+        price: '30',
+        name: 'stake',
+      },
+    ],
+  },
+];
