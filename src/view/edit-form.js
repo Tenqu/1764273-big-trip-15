@@ -1,6 +1,6 @@
-import { getDateFormat } from '../utils/util';
+import { createElement, getDateHoursMinutes } from '../utils/util';
 
-export const createEditFormTemplate = (data) => {
+const createEditFormTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, price, offers} = data;
   const createTripTypeItem = ( isChecked = false) => `<div class="event__type-item">
         <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked ? 'checked' : ''}>
@@ -49,10 +49,10 @@ export const createEditFormTemplate = (data) => {
       </div>
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value=${getDateFormat(timeFrom)}>
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value=${getDateHoursMinutes(timeFrom)}>
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value=${getDateFormat(timeTo)}>
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value=${getDateHoursMinutes(timeTo)}>
       </div>
       <div class="event__field-group  event__field-group--price">
         <label class="event__label" for="event-price-1">
@@ -87,3 +87,26 @@ export const createEditFormTemplate = (data) => {
   </form>
 </li>`;
 };
+
+export default class EditForm {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

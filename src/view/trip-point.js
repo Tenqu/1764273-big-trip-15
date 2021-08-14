@@ -1,20 +1,21 @@
 import dayjs from 'dayjs';
-import { getDateHM, getDateISO, getDateMD } from '../utils/util';
+import { createElement, getDateFormat, getDateHoursMinutes, getDateISO, getDateMonthDay } from '../utils/util';
 
-const MINUTES_IN_DAY = 1440;
-const MINUTES_IN_HOUR = 60;
+const MILLISECONDS_IN_DAY = 86400000;
+const MILLISECONDS_IN_HOURS = 3600000;
 
-export const createTripPointTemplate = (data) => {
+const createTripPointTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, price, offers, isFavorite} = data;
 
-  const getDate = () => {
-    const counterMinute = 60;
-    const deuDate = (timeTo - timeFrom) * counterMinute;
-    if (deuDate <= MINUTES_IN_DAY) {
+  const getDueDate = () => {
+    const startDate = dayjs(getDateFormat(timeFrom));
+    const endDate = dayjs(getDateFormat(timeTo));
+    const deuDate = endDate.diff(startDate);
+    if (deuDate <= MILLISECONDS_IN_DAY) {
       return `${dayjs(deuDate).format('hh')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    }else if (deuDate > MINUTES_IN_DAY) {
+    }else if (deuDate > MILLISECONDS_IN_DAY) {
       return `${dayjs(deuDate).format('DD')  }D ${  dayjs(deuDate).format('DD')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    } else if (deuDate <= MINUTES_IN_HOUR) {
+    } else if (deuDate <= MILLISECONDS_IN_HOURS) {
       return `${dayjs(deuDate).format('mm')  }M`;
     }
   };
@@ -30,18 +31,18 @@ export const createTripPointTemplate = (data) => {
   return `<ul class="trip-events__list">
   <li class="trip-events__item">
     <div class="event">
-      <time class="event__date" datetime="${getDateISO(timeFrom)}">${getDateMD(timeFrom)}</time>
+      <time class="event__date" datetime="${getDateISO(timeFrom)}">${getDateMonthDay(timeFrom)}</time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime=${getDateISO(timeFrom)}>${getDateHM(timeFrom)}</time>
+          <time class="event__start-time" datetime=${getDateISO(timeFrom)}>${getDateHoursMinutes(timeFrom)}</time>
           &mdash;
-          <time class="event__end-time" datetime=${getDateISO(timeTo)}>${getDateHM(timeTo)}</time>
+          <time class="event__end-time" datetime=${getDateISO(timeTo)}>${getDateHoursMinutes(timeTo)}</time>
         </p>
-        <p class="event__duration">${getDate()}</p>
+        <p class="event__duration">${getDueDate()}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>
@@ -63,3 +64,26 @@ export const createTripPointTemplate = (data) => {
   </li>
   </ul>`;
 };
+
+export default class TripPoint {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripPointTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

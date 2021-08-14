@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
-export const createTripInfoTemplate = (data) => {
+import { createElement } from '../utils/util';
+
+const createTripInfoTemplate = (data) => {
   const MAX_PATH_DISPLAY_LENGTH = 3;
   let totalCost = 0;
 
@@ -11,13 +13,13 @@ export const createTripInfoTemplate = (data) => {
   };
 
   const tripPath = data.reduce((path, point, index) => {
-    const {name, offers, price } = point;
+    const {destination, offers, price } = point;
     totalCost += price;
     if (offers) {
       offers.forEach(() => totalCost += price);
     }
-    if (index === 0 || path[path.length - 1] !== name) {
-      path.push(name);
+    if (index === 0 || path[path.length - 1] !== destination.name) {
+      path.push(destination.name);
     }
     return path;
   }, []);
@@ -40,3 +42,26 @@ export const createTripInfoTemplate = (data) => {
       </p>
     </section>`;
 };
+
+export default class TripInfo {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
