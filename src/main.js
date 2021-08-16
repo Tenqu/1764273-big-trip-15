@@ -6,13 +6,13 @@ import AddFormView from './view/add-form';
 import SortView from './view/sort';
 import FilterView from './view/filter';
 import TripInfoView from './view/trip-info';
-import { generateData } from './mock/data.js';
+import { generatePoints } from './mock/data.js';
 import { render, RenderPosition } from './utils/util.js';
 import dayjs from 'dayjs';
 
-const POINTS = 15;
+const POINTS_COUNT = 15;
 
-const tripPoints = new Array(POINTS).fill().map(generateData);
+const tripPoints = new Array(POINTS_COUNT).fill().map(generatePoints);
 const tripPointsList = new TripEventsList();
 const sortTripPointsByStart = () => tripPoints.slice().sort((pointA, pointB) => dayjs(pointA.timeFrom).diff(pointB.timeFrom));
 const tripPointsSortedByStart = sortTripPointsByStart(tripPoints);
@@ -49,6 +49,7 @@ const renderPoint = (pointsListElement, task) => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
+
   formComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     replaceFormToPoint();

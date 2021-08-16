@@ -5,7 +5,7 @@ const createTripInfoTemplate = (data) => {
   const MAX_PATH_DISPLAY_LENGTH = 3;
   let totalCost = 0;
 
-  const getTripInfo = () => {
+  const getTripDate = () => {
     const startDate = dayjs(data[0].timeFrom).format('MMM D');
     const endDate = dayjs(data[data.length - 1].timeFrom).format('MMM D');
 
@@ -35,7 +35,7 @@ const createTripInfoTemplate = (data) => {
   return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">${tripPathString()}</h1>
-        <p class="trip-info__dates">${data.length ? getTripInfo() : ''}</p>
+        <p class="trip-info__dates">${data.length ? getTripDate() : ''}</p>
       </div>
       <p class="trip-info__cost">
         Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalCost}</span>
