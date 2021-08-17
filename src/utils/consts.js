@@ -1,15 +1,3 @@
-export const TRIP_POINT_TYPES = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-in',
-  'Sightseeing',
-  'Restaurant',
-];
-
 export const CITIES = [
   'Amsterdam',
   'Chamonix',
@@ -28,10 +16,32 @@ export const DESTINATIONS = [
   'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.',
   'In rutrum ac purus sit amet tempus.',
 ];
+const offerType = {
+  FLIGHT: 'Flight',
+  TAXI: 'Taxi',
+  BUS: 'Bus',
+  TRAIN: 'Train',
+  SHIP: 'Ship',
+  DRIVE: 'Drive',
+  CHECK_IN: 'Check-in',
+  SIGTHSEEING: 'Sightseeing',
+  RESTAURANT: 'Restaurant',
+};
+export const TRIP_POINT_TYPES = [
+  offerType.FLIGHT,
+  offerType.TAXI,
+  offerType.BUS,
+  offerType.TRAIN,
+  offerType.SHIP,
+  offerType.TRAIN,
+  offerType.CHECK_IN,
+  offerType.SIGTHSEEING,
+  offerType.RESTAURANT,
+];
 
 export const OFFERS = [
   {
-    type: 'Flight',
+    type: offerType.FLIGHT,
     offers: [
       {
         title: 'Choose meal',
@@ -60,7 +70,7 @@ export const OFFERS = [
       },
     ]},
   {
-    type: 'Taxi',
+    type: offerType.TAXI,
     offers: [
       {
         title: 'Kid\'s sit',
@@ -80,7 +90,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Bus',
+    type: offerType.BUS,
     offers: [
       {
         title: 'Front seat',
@@ -95,7 +105,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Train',
+    type: offerType.TRAIN,
     offers: [
       {
         title: 'Large seats',
@@ -105,7 +115,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Ship',
+    type: offerType.SHIP,
     offers: [
       {
         title: 'Luxury food',
@@ -120,7 +130,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Drive',
+    type: offerType.DRIVE,
     offers: [
       {
         title: 'Mercedes',
@@ -135,7 +145,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Check-in',
+    type: offerType.CHECK_IN,
     offers: [
       {
         title: '2 bedroom',
@@ -150,7 +160,7 @@ export const OFFERS = [
     ],
   },
   {
-    type: 'Sightseeing',
+    type: offerType.SIGTHSEEING,
     offers: [
       {
         title: 'Red Square',

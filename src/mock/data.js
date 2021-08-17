@@ -23,7 +23,7 @@ const getOffers = (name) => {
   return result.offers;
 };
 
-export const generateData = () => {
+export const generatePoints = () => {
   const type = TRIP_POINT_TYPES[getRandomInteger(0, TRIP_POINT_TYPES.length - 1)];
   const startTime = dayjs().add(getRandomInteger(-HOURS_GAP, HOURS_GAP), 'hour').toDate();
   const endTime = dayjs(startTime).add(getRandomInteger(MIN_HOURS_DURATION, MAX_HOURS_DURATION), 'minute').toDate();
