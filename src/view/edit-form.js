@@ -1,12 +1,17 @@
 import { TRIP_POINT_TYPES } from '../utils/consts';
 import { createElement, getDateHoursMinutes } from '../utils/util';
-const createEventType = (type) => (
+const isChecked = (type, currentType) => {
+  if  (type === currentType) {
+    return 'checked';
+  } return '';
+};
+const createEventType = (type, currentType) => (
   `<div class="event__type-item">
-  <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}">
+  <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${isChecked(type.toLowerCase(), currentType.toLowerCase())}>
   <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`
 );
-const createEventTypeList = () => TRIP_POINT_TYPES.map((point) => createEventType(point));
+const createEventTypeList = (currentType) => TRIP_POINT_TYPES.map((type) => createEventType(type, currentType));
 const createEditFormTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, price, offers} = data;
   const createPictureMarkup = () => destination.photo.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join(' ');
@@ -39,7 +44,7 @@ const createEditFormTemplate = (data) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-           ${createEventTypeList()}
+           ${createEventTypeList(type).join(' ')}
           </fieldset>
         </div>
       </div>
