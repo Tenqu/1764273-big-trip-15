@@ -1,10 +1,8 @@
-import { TRIP_POINT_TYPES } from '../utils/consts';
-import { createElement, getDateHoursMinutes } from '../utils/util';
-const isChecked = (type, currentType) => {
-  if  (type === currentType) {
-    return 'checked';
-  } return '';
-};
+import { TRIP_POINT_TYPES } from '../mock/consts';
+import { getDateHoursMinutes } from '../utils/trip';
+import { isChecked } from '../utils/trip';
+import AbstractView from './Abstract';
+
 const createEventType = (type, currentType) => (
   `<div class="event__type-item">
   <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${isChecked(type.toLowerCase(), currentType.toLowerCase())}>
@@ -96,25 +94,35 @@ const createEditFormTemplate = (data) => {
 </li>`;
 };
 
-export default class EditForm {
+export default class EditForm extends AbstractView {
   constructor(data) {
+    super();
     this._data = data;
-    this._element = null;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._rollupBtnClickHandler = this._rollupBtnClickHandler.bind(this);
   }
 
   getTemplate() {
     return createEditFormTemplate(this._data);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  setFormSubmitHadler(callback) {
+    const editionForm = this.getElement().querySelector('form');
+    editionForm.addEventListener('submit', this._formSubmitHandler);
+    this._callback.formSubmit = callback;
+  }
+
+  _rollupBtnClickHandler() {
+    this._callback.rollupBtnClick();
+  }
+
+  setRollupBtnClickHandler(callback) {
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._rollupBtnClickHandler);
+    this._callback.rollupBtnClick = callback;
   }
 }

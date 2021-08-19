@@ -7,7 +7,7 @@ import SortView from './view/sort';
 import FilterView from './view/filter';
 import TripInfoView from './view/trip-info';
 import { generatePoints } from './mock/data.js';
-import { render, RenderPosition } from './utils/util.js';
+import { render, RenderPosition, replace } from './utils/render';
 import dayjs from 'dayjs';
 
 const POINTS_COUNT = 15;
@@ -26,11 +26,8 @@ const renderPoint = (pointsListElement, task) => {
   const pointComponent = new TripPointView(task);
   const formComponent = new EditFormView(task);
 
-  const replacePointToForm = () => {
-    pointsListElement.replaceChild(formComponent.getElement(), pointComponent.getElement());
-  };
   const replaceFormToPoint = () => {
-    pointsListElement.replaceChild(pointComponent.getElement(), formComponent.getElement());
+    replace(pointComponent, formComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -40,19 +37,24 @@ const renderPoint = (pointsListElement, task) => {
     }
   };
 
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  const replacePointToForm = () => {
+    replace(formComponent, pointComponent);
+    document.addEventListener('keydown', onEscKeyDown);
+  };
+
+  pointComponent.setRollupBtnClickHandler(() => {
     replacePointToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  formComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  formComponent.setFormSubmitHadler(() => {
     replaceFormToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  formComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  formComponent.setRollupBtnClickHandler(() => {
     replaceFormToPoint();
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
   render(pointsListElement, pointComponent.getElement(), RenderPosition.BEFOREEND);

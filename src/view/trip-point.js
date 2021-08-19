@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
-import { createElement, getDateFormat, getDateHoursMinutes, getDateISO, getDateMonthDay } from '../utils/util';
+import { getDateFormat, getDateHoursMinutes, getDateISO, getDateMonthDay } from '../utils/trip';
+
+import AbstractView from './Abstract';
 
 const MILLISECONDS_IN_DAY = 86400000;
 const MILLISECONDS_IN_HOURS = 3600000;
@@ -65,25 +67,24 @@ const createTripPointTemplate = (data) => {
   </ul>`;
 };
 
-export default class TripPoint {
+export default class TripPoint extends AbstractView {
   constructor(data) {
+    super();
     this._data = data;
-    this._element = null;
+
+    this._rollupBtnClickHandler = this._rollupBtnClickHandler.bind(this);
   }
 
   getTemplate() {
     return createTripPointTemplate(this._data);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _rollupBtnClickHandler() {
+    this._callback.rollupBtnClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setRollupBtnClickHandler(callback) {
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._rollupBtnClickHandler);
+    this._callback.rollupBtnClick = callback;
   }
 }
