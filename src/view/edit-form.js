@@ -1,7 +1,7 @@
 import { TRIP_POINT_TYPES } from '../mock/consts';
 import { getDateHoursMinutes } from '../utils/trip';
 import { isChecked } from '../utils/trip';
-import AbstractView from './Abstract';
+import AbstractView from './abstract';
 
 const createEventType = (type, currentType) => (
   `<div class="event__type-item">

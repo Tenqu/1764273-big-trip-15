@@ -1,4 +1,4 @@
-import AbstractView from './Abstract';
+import AbstractView from './abstract';
 
 const createFilterTemplate = () => (
   `<div class="trip-controls__filters">

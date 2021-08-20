@@ -1,26 +1,10 @@
-import dayjs from 'dayjs';
-import { getDateFormat, getDateHoursMinutes, getDateISO, getDateMonthDay } from '../utils/trip';
+import {getDateHoursMinutes, getDateISO, getDateMonthDay, getDueDate} from '../utils/trip';
 
-import AbstractView from './Abstract';
-
-const MILLISECONDS_IN_DAY = 86400000;
-const MILLISECONDS_IN_HOURS = 3600000;
+import AbstractView from './abstract';
 
 const createTripPointTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, price, offers, isFavorite} = data;
 
-  const getDueDate = () => {
-    const startDate = dayjs(getDateFormat(timeFrom));
-    const endDate = dayjs(getDateFormat(timeTo));
-    const deuDate = endDate.diff(startDate);
-    if (deuDate <= MILLISECONDS_IN_DAY) {
-      return `${dayjs(deuDate).format('hh')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    }else if (deuDate > MILLISECONDS_IN_DAY) {
-      return `${dayjs(deuDate).format('DD')  }D ${  dayjs(deuDate).format('DD')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    } else if (deuDate <= MILLISECONDS_IN_HOURS) {
-      return `${dayjs(deuDate).format('mm')  }M`;
-    }
-  };
   const createOfferElement =  (offer) =>`<li class="event__offer">
       <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
