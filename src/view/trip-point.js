@@ -1,24 +1,10 @@
-import dayjs from 'dayjs';
-import { createElement, getDateFormat, getDateHoursMinutes, getDateISO, getDateMonthDay } from '../utils/util';
+import {getDateHoursMinutes, getDateISO, getDateMonthDay, getDueDate} from '../utils/trip';
 
-const MILLISECONDS_IN_DAY = 86400000;
-const MILLISECONDS_IN_HOURS = 3600000;
+import AbstractView from './abstract';
 
 const createTripPointTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, price, offers, isFavorite} = data;
 
-  const getDueDate = () => {
-    const startDate = dayjs(getDateFormat(timeFrom));
-    const endDate = dayjs(getDateFormat(timeTo));
-    const deuDate = endDate.diff(startDate);
-    if (deuDate <= MILLISECONDS_IN_DAY) {
-      return `${dayjs(deuDate).format('hh')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    }else if (deuDate > MILLISECONDS_IN_DAY) {
-      return `${dayjs(deuDate).format('DD')  }D ${  dayjs(deuDate).format('DD')  }H ${  dayjs(deuDate).format('mm')  }M`;
-    } else if (deuDate <= MILLISECONDS_IN_HOURS) {
-      return `${dayjs(deuDate).format('mm')  }M`;
-    }
-  };
   const createOfferElement =  (offer) =>`<li class="event__offer">
       <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
@@ -65,25 +51,24 @@ const createTripPointTemplate = (data) => {
   </ul>`;
 };
 
-export default class TripPoint {
+export default class TripPoint extends AbstractView {
   constructor(data) {
+    super();
     this._data = data;
-    this._element = null;
+
+    this._rollupBtnClickHandler = this._rollupBtnClickHandler.bind(this);
   }
 
   getTemplate() {
     return createTripPointTemplate(this._data);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _rollupBtnClickHandler() {
+    this._callback.rollupBtnClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setRollupBtnClickHandler(callback) {
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._rollupBtnClickHandler);
+    this._callback.rollupBtnClick = callback;
   }
 }

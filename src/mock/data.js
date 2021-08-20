@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { CITIES, DESTINATIONS, TRIP_POINT_TYPES, OFFERS } from '../utils/consts';
-import { getRandomInteger } from '../utils/util';
+import { CITIES, DESTINATIONS, TRIP_POINT_TYPES, OFFERS } from './consts';
+import { getRandomInteger } from '../utils/common';
 
 const HOURS_GAP = 24;
 const MIN_HOURS_DURATION = 1;
