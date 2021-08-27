@@ -91,7 +91,7 @@ export default class Trip {
         this._points = this._backupData.slice();
     }
 
-    this._currentSortType = sortType;
+    this._sourcedPoints = sortType;
   }
 
   _clearPointList() {
