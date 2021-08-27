@@ -78,7 +78,8 @@ export default class Point {
   }
 
   _escKeydownHandler(evt) {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    const KeyCode = {ESCAPE: 'Escape'};
+    if (evt.key === KeyCode.ESCAPE) {
       evt.preventDefault();
       this._formComponent.reset(this._point);
       this._replaceFormToPoint();
