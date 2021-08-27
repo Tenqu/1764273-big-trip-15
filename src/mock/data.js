@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { CITIES, DESTINATIONS, TRIP_POINT_TYPES, OFFERS } from './consts';
 import { getRandomInteger } from '../utils/common';
+import { nanoid } from 'nanoid';
 
 const HOURS_GAP = 24;
 const MIN_HOURS_DURATION = 1;
@@ -40,5 +41,6 @@ export const generatePoints = () => {
     price: getRandomInteger(5, 200),
     offers: getOffers(type),
     isFavorite: Boolean(getRandomInteger(0,1)),
+    id: nanoid(),
   };
 };
