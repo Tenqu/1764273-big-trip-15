@@ -88,10 +88,10 @@ export default class Trip {
         this._points.sort(sortByPrice);
         break;
       default:
-        this._points = this._backupData.slice();
+        this._points = this._sourcedPoints.slice();
     }
 
-    this._sourcedPoints = sortType;
+    this._currentSortType = sortType;
   }
 
   _clearPointList() {
