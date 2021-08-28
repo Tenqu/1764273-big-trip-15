@@ -1,6 +1,7 @@
 import TripPointView from '../view/trip-point';
 import EditFormView from '../view/edit-form';
 import { remove, render, RenderPosition, replace } from '../utils/render';
+import { KeyCode } from '../utils/consts';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -78,10 +79,8 @@ export default class Point {
   }
 
   _escKeydownHandler(evt) {
-    const KeyCode = {ESCAPE: 'Escape'};
-    if (evt.key === KeyCode.ESCAPE) {
+    if (evt.key === KeyCode.ESCAPE || evt.key === KeyCode.Esc) {
       evt.preventDefault();
-      this._formComponent.reset(this._point);
       this._replaceFormToPoint();
     }
   }
