@@ -1,15 +1,17 @@
 import TripEventsView from '../view/trip-events';
-import SortView from '../view/sort';
+import SortView from '../view/trip-sort';
 import EventsListView from '../view/events-list';
 import NoPointView from '../view/no-point';
 import { render, RenderPosition } from '../utils/render';
 import { updateItem } from '../utils/common';
 import PointPresenter from './point';
+import { sorByDay, sorByTime, sortByPrice, SortType } from '../utils/sort';
 
 export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
     this._tripPresenter = new Map();
+    this._currentSortType = SortType.DEFAULT;
 
     this._boardComponent = new TripEventsView();
     this._sortComponent = new SortView();
@@ -18,6 +20,7 @@ export default class Trip {
 
     this._handlePointChange = this._handlePointChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(points) {
@@ -41,6 +44,7 @@ export default class Trip {
 
   _renderSort() {
     render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderPoint(point) {
@@ -69,6 +73,39 @@ export default class Trip {
       return;
     }
     this._renderSort();
+    this._renderPointList();
+  }
+
+  _sortPoints(sortType) {
+    switch (sortType) {
+      case SortType.DAY:
+        this._points.sort(sorByDay);
+        break;
+      case SortType.TIME:
+        this._points.sort(sorByTime);
+        break;
+      case SortType.PRICE:
+        this._points.sort(sortByPrice);
+        break;
+      default:
+        this._points = this._sourcedPoints.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _clearPointList() {
+    this._tripPresenter.forEach((presenter) => presenter.destroy());
+    this._tripPresenter.clear();
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortPoints(sortType);
+    this._clearPointList();
     this._renderPointList();
   }
 }
