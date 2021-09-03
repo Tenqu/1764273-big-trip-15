@@ -1,7 +1,9 @@
 import { TRIP_POINT_TYPES } from '../mock/consts';
+import { generateDestination, getOffers } from '../mock/data';
+import { getRandomInteger } from '../utils/common';
 import { getDateHoursMinutes } from '../utils/trip';
 import { isChecked } from '../utils/trip';
-import AbstractView from './abstract';
+import SmartView from './smart';
 
 const createEventType = (type, currentType) => (
   `<div class="event__type-item">
@@ -29,7 +31,7 @@ const createEditFormTemplate = (data) => {
         <option value="${destination.name}"></option>
         </datalist>`
   );
-  const offersMarkup = offers.map((item) => createOfferMarkup(item)).join(' ');
+  const offersMarkup = () => offers.map((item) => createOfferMarkup(item)).join(' ');
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -77,7 +79,7 @@ const createEditFormTemplate = (data) => {
       <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         <div class="event__available-offers">
-          ${offersMarkup}
+          ${offersMarkup()}
         </div>
       </section>
       <section class="event__section  event__section--destination">
@@ -94,15 +96,59 @@ const createEditFormTemplate = (data) => {
 </li>`;
 };
 
-export default class EditForm extends AbstractView {
-  constructor(data) {
+export default class EditForm extends SmartView {
+  constructor(event, offers, destinations) {
     super();
-    this._data = data;
+    this._data = EditForm.parseEventToData(event);
+    this._offers = offers;
+    this._destinations = destinations;
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._closeEditHandler = this._closeEditHandler.bind(this);
+    this._typeChangeHandler = this._typeChangeHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
     return createEditFormTemplate(this._data);
+  }
+
+  _closeEditHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeEdit();
+  }
+
+  setCloseEditHandler(callback) {
+    this._callback.closeEdit = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._closeEditHandler);
+  }
+
+  _typeChangeHandler(evt) {
+    this.updateData({
+      type: evt.target.value,
+      offers: getOffers(TRIP_POINT_TYPES[getRandomInteger(0, TRIP_POINT_TYPES.length - 1)]),
+      destination: generateDestination(),
+    });
+  }
+
+  _priceChangeHandler(evt) {
+    this.updateData({
+      price: evt.target.value,
+    }, true);
+  }
+
+  _offerChangeHandler(evt) {
+    this.updateData({
+      offers: evt.target.value,
+    }, true);
+  }
+
+  _setInnerHandlers() {
+    this.getElement().querySelector('.event__input--destination').addEventListener('change', this._destChangeHandler);
+    this.getElement().querySelector('.event__type-group').addEventListener('change', this._typeChangeHandler);
+    this.getElement().querySelector('.event__input--price').addEventListener('change', this._priceChangeHandler);
   }
 
   _formSubmitHandler(evt) {
@@ -113,5 +159,32 @@ export default class EditForm extends AbstractView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('.event__save-btn').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setCloseEditHandler(this._callback.closeEdit);
+  }
+
+  reset(event) {
+    this.updateData(
+      EditForm.parseEventToData(event),
+    );
+  }
+
+  static parseEventToData(event) {
+    return Object.assign(
+      {},
+      event,
+    );
+  }
+
+  static parseDataToEvent(data) {
+    data = Object.assign({}, data);
+
+    delete data.isDueDate;
+    delete data.isRepeating;
+
+    return data;
   }
 }
