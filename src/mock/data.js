@@ -28,7 +28,7 @@ export const generateDestination = () => {
   const destinations = {
     description: DESTINATIONS[getRandomInteger(1, DESTINATIONS.length - 1)],
     name: CITIES[getRandomInteger(0, CITIES.length - 1)],
-    photo: getPhoto(),
+    pictures: getPhoto(),
   };
   return destinations;
 };
@@ -42,7 +42,7 @@ export const generatePoints = () => {
     timeFrom: startTime,
     timeTo: endTime,
     destination: generateDestination(),
-    price: getRandomInteger(5, 200),
+    basePrice: getRandomInteger(5, 200),
     offers: getOffers(type),
     isFavorite: Boolean(getRandomInteger(0,1)),
     id: nanoid(),
