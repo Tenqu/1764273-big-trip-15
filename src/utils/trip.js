@@ -1,4 +1,9 @@
 import dayjs from 'dayjs';
+const MIN_MINUTES = 59;
+const MAX_MINUTES = 60;
+const MAX_HOURS = 24;
+const MAX_VALUE = 60000;
+const MIN_VALUE = 1;
 
 export const getDateFormat = ((date) => dayjs(date).format('YYYY/MM/DD HH:mm'));
 export const getDateISO = ((date) => dayjs(date).format('YYYY-MM-DDTHH:mm'));
@@ -9,18 +14,18 @@ export const generateDuration = (timeFrom, timeTo) => {
   const diff = dayjs(timeTo).diff(dayjs(timeFrom));
 
   switch (true) {
-    case (diff <= 59) :
+    case (diff <= MIN_MINUTES) :
       return 'Date Error';
-    case (diff / 60000 / 60) < 1:
+    case (diff / MAX_VALUE / MAX_MINUTES) < MIN_VALUE:
       return dayjs(diff).format('mm[M]');
-    case (diff / 60000 / 60) >= 1 && (diff / 60000 / 60) < 24:
+    case (diff / MAX_VALUE / MAX_MINUTES) >= MIN_VALUE && (diff / MAX_VALUE / MAX_MINUTES) < MAX_HOURS:
       return dayjs(diff).format('HH[H] mm[M]');
     default:
       return dayjs(diff).format('DD[D] HH[H] mm[M]');
   }
 };
 
-export const isChecked = (type, currentType) => {
+export const isCheckedType = (type, currentType) => {
   if  (type === currentType) {
     return 'checked';
   } return '';

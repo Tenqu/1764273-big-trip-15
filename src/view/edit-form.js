@@ -1,17 +1,16 @@
 
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-import { TRIP_POINT_TYPES } from '../mock/consts';
+import { OFFERS, TRIP_POINT_TYPES } from '../mock/consts';
 import { getOffers } from '../mock/data';
 import { getRandomInteger } from '../utils/common';
 import { Dests } from '../utils/consts';
-import {  getDateHoursMinutes, getOffersValues} from '../utils/trip';
-import { isChecked } from '../utils/trip';
+import {  getDateHoursMinutes, getOffersValues, isCheckedType} from '../utils/trip';
 import SmartView from './smart';
 
 const createEventType = (type, currentType) => (
   `<div class="event__type-item">
-  <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${isChecked(type.toLowerCase(), currentType.toLowerCase())}>
+  <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${isCheckedType(type.toLowerCase(), currentType.toLowerCase())}>
   <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`
 );
@@ -20,25 +19,31 @@ const createSingleDestinationOption = (typesOfDestinations) => {
   const options = Object.values(typesOfDestinations);
   return options.map((destination) => `<option value="${destination.name}"></option>`).join(' ');
 };
-const createDestinationOptions = (typesOfDestinations) =>
+const createDestinationOptions = (typesOfDestinations) => (
   `<datalist id="destination-list-1">
     ${createSingleDestinationOption(typesOfDestinations)}
-  </datalist>`;
+  </datalist>`
+);
+const createOfferMarkup = (availableOffers, selectedOffers) =>
+  `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">${availableOffers.map((offer) => `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').pop()}-1" type="checkbox" name="event-offer-${offer.title.split(' ').pop()}" ${(selectedOffers.find((item) => item.title === offer.title)) ? 'checked' : ''} >
+  <label class="event__offer-label" for="event-offer-${offer.title.split(' ').pop()}-1">
+  <span class="event__offer-title">${offer.title}</span>
+  &plus;&euro;&nbsp;
+  <span class="event__offer-price">${offer.price}</span>
+  </label>
+  </div>`).join('\n')}
+  </div>
+</section>`;
 
+const getAvailableOffers = (type, offers) => (offers.find((offer) => offer.type.toLowerCase() === type.toLowerCase())).offers;
 const createEventTypeList = (currentType) => TRIP_POINT_TYPES.map((type) => createEventType(type, currentType));
 const createEditFormTemplate = (data) => {
-  const {type, destination, timeFrom, timeTo, basePrice, offers} = data;
+  const {type, destination, timeFrom, timeTo, basePrice, offers = []} = data;
   const createPictureMarkup = () => destination.pictures.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join(' ');
-  const createOfferMarkup = (offer) =>
-    `<div class="event__offer-selector">
-       <input class="event__offer-checkbox  visually-hidden" id="${offer.title}" type="checkbox" name="event-offer-${offer.title}"}>
-      <label class="event__offer-label" for="${offer.title}">
-        <span class="event__offer-title">${offer.title}</span>
-        &plus;&euro;&nbsp;
-        <span class="even__offer-price">${offer.price}</span>
-      </label>
-     </div>`;
-  const offersMarkup = () => offers.map((item) => createOfferMarkup(item)).join(' ');
+  const allOffers = getAvailableOffers(type, OFFERS);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -83,12 +88,7 @@ const createEditFormTemplate = (data) => {
       </button>
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-          ${offersMarkup()}
-        </div>
-      </section>
+    ${allOffers.length && createOfferMarkup(allOffers, offers) || ''}
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destination.description}</p>
@@ -143,7 +143,7 @@ export default class EditForm extends SmartView {
   }
 
   _getNewDestination(requiredPoint) {
-    const destinationTypes = Object.values(Dests);
+    const destinationTypes = Object.values(this._destinations);
     const requiredDestination = destinationTypes.find((point) => point.name === requiredPoint);
     return requiredDestination;
   }

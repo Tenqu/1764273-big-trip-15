@@ -1,7 +1,8 @@
 import TripPointView from '../view/trip-point';
 import EditFormView from '../view/edit-form';
 import { remove, render, RenderPosition, replace } from '../utils/render';
-import { KeyCode } from '../utils/consts';
+import { Dests, KeyCode } from '../utils/consts';
+import { OFFERS } from '../mock/consts';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -31,7 +32,7 @@ export default class Point {
     const prevPointComponent = this._pointComponent;
     const prevFormComponent = this._formComponent;
 
-    this._pointComponent = new TripPointView(point);
+    this._pointComponent = new TripPointView(point, OFFERS, Dests);
     this._formComponent = new EditFormView(point);
 
     this._pointComponent.setEditClickHandler(this._handlePointEditClick);
