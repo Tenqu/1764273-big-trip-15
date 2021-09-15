@@ -1,3 +1,4 @@
+
 export const CITIES = [
   'Amsterdam',
   'Chamonix',
@@ -16,7 +17,8 @@ export const DESTINATIONS = [
   'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.',
   'In rutrum ac purus sit amet tempus.',
 ];
-const offerType = {
+
+export const offerType = {
   FLIGHT: 'Flight',
   TAXI: 'Taxi',
   BUS: 'Bus',

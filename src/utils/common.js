@@ -4,10 +4,9 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const getRandomArray = (arr) => {
-  const results = [];
-  results.push(arr.slice(0, Math.ceil(Math.random() * arr.length)));
-  return results;
+export const getRandomArrayElement = (elements) => {
+  const result = Math.floor(Math.random() * elements.length);
+  return elements[result];
 };
 
 export const updateItem = (items, update) => {

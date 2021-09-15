@@ -1,9 +1,9 @@
-import {getDateHoursMinutes, getDateISO, getDateMonthDay, getDueDate} from '../utils/trip';
+import {generateDuration, getDateHoursMinutes, getDateISO, getDateMonthDay} from '../utils/trip';
 
 import AbstractView from './abstract';
 
 const createTripPointTemplate = (data) => {
-  const {type, destination, timeFrom, timeTo, price, offers, isFavorite} = data;
+  const {type, destination, timeFrom, timeTo, basePrice, offers, isFavorite} = data;
 
   const createOfferElement =  (offer) =>`<li class="event__offer">
       <span class="event__offer-title">${offer.title}</span>
@@ -28,10 +28,10 @@ const createTripPointTemplate = (data) => {
           &mdash;
           <time class="event__end-time" datetime=${getDateISO(timeTo)}>${getDateHoursMinutes(timeTo)}</time>
         </p>
-        <p class="event__duration">${getDueDate()}</p>
+        <p class="event__duration">${generateDuration(timeFrom, timeTo)}</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${price}</span>
+        &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
