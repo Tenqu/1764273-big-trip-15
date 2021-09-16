@@ -19,11 +19,13 @@ const createSingleDestinationOption = (typesOfDestinations) => {
   const options = Object.values(typesOfDestinations);
   return options.map((destination) => `<option value="${destination.name}"></option>`).join(' ');
 };
+
 const createDestinationOptions = (typesOfDestinations) => (
   `<datalist id="destination-list-1">
     ${createSingleDestinationOption(typesOfDestinations)}
   </datalist>`
 );
+
 const createOfferMarkup = (availableOffers, selectedOffers) =>
   `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -39,7 +41,9 @@ const createOfferMarkup = (availableOffers, selectedOffers) =>
 </section>`;
 
 const getAvailableOffers = (type, offers) => (offers.find((offer) => offer.type.toLowerCase() === type.toLowerCase())).offers;
+
 const createEventTypeList = (currentType) => TRIP_POINT_TYPES.map((type) => createEventType(type, currentType));
+
 const createEditFormTemplate = (data) => {
   const {type, destination, timeFrom, timeTo, basePrice, offers = []} = data;
   const createPictureMarkup = () => destination.pictures.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join(' ');
